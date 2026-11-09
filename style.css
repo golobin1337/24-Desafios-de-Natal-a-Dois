@@ -117,8 +117,10 @@ section{position:relative;padding:76px 0}
     radial-gradient(50% 40% at 10% 90%,rgba(131,46,61,.06),transparent 70%),
     var(--creme);}
 .hero .container{position:relative;z-index:1}
-.hero-grid{display:grid;gap:34px;grid-template-areas:"texto" "media" "cta"}
+.hero-grid{display:grid;gap:30px;grid-template-areas:"texto" "media" "body" "cta"}
 .hero-text{grid-area:texto}
+.hero-body{grid-area:body}
+.hero-body .desc{margin-top:0}
 .hero-media{grid-area:media}
 .hero-cta{grid-area:cta;display:flex;flex-direction:column;gap:16px;align-items:center}
 .hero h1{font-size:clamp(2rem,7.6vw,3.35rem);font-weight:700;color:var(--vinho)}
@@ -176,22 +178,28 @@ section{position:relative;padding:76px 0}
   content:"";position:absolute;inset:8% 6% -4%;border-radius:50%;
   background:radial-gradient(closest-side,rgba(216,173,99,.35),transparent);filter:blur(20px);z-index:-1;
 }
-.hero .deco-tl{top:-30px;left:-60px;width:230px;height:230px;transform:rotate(30deg);opacity:.85}
-.hero .deco-br{bottom:-40px;right:-70px;width:260px;height:260px;transform:rotate(210deg);opacity:.85}
+.hero .deco-tl{display:none} /* ramo do canto superior: só em telas largas, longe do título */
+.hero .deco-br{bottom:-60px;right:-90px;width:200px;height:200px;transform:rotate(210deg);opacity:.45}
 .hero .s1{top:22px;right:12%;width:16px;height:16px}
-.hero .s2{top:42%;left:4%;width:10px;height:10px;opacity:.7}
+.hero .s2{display:none}
 .hero .s3{bottom:16%;right:46%;width:12px;height:12px;opacity:.7}
 
 @media (min-width:900px){
   .hero{padding:96px 0 120px}
-  .hero-grid{grid-template-columns:1.08fr .92fr;grid-template-areas:"texto media" "cta media";column-gap:64px;row-gap:34px;align-items:center}
-  .hero-text{align-self:end}
+  .hero-grid{grid-template-columns:1.08fr .92fr;grid-template-rows:1fr auto auto auto 1fr;grid-template-areas:". media" "texto media" "body media" "cta media" ". media";column-gap:64px;row-gap:0;align-items:start}
+  .hero-media{align-self:center}
+  .hero-body{margin-top:18px}
+  .hero-cta{margin-top:34px}
+
   .hero-cta{align-self:start;align-items:flex-start}
   .hero-cta .trust{justify-content:flex-start}
-  .hero .deco-tl{width:300px;height:300px;left:-80px;top:-50px}
-  .hero .deco-br{width:340px;height:340px}
+  .hero .deco-br{width:300px;height:300px;opacity:.6}
+  .hero .s2{display:block;top:44%;left:2%;width:10px;height:10px;opacity:.7}
 }
-@media (max-width:899px){.hero-text{text-align:center}}
+@media (min-width:1300px){
+  .hero .deco-tl{display:block;top:-60px;left:-110px;width:280px;height:280px;transform:rotate(30deg);opacity:.55}
+}
+@media (max-width:899px){.hero-text,.hero-body{text-align:center}}
 
 /* =====================================================================
    DOBRA 2 — O QUE VOCÊ RECEBE
@@ -414,3 +422,6 @@ body.has-sticky{padding-bottom:84px}
 .footer-links a:hover{color:var(--dourado-suave);border-bottom-color:var(--dourado)}
 .footer-copy{margin-top:26px;padding-top:22px;border-top:1px solid rgba(216,173,99,.2);font-size:.85rem}
 .footer-disclaimer{margin:14px auto 0;max-width:640px;font-size:.74rem;line-height:1.55;color:rgba(255,244,230,.55)}
+
+/* Ramo da oferta no canto superior: escondido no celular para não ficar atrás do título */
+@media (max-width:899px){ .offer .deco-tl{display:none} }

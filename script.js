@@ -75,7 +75,7 @@ var URL_CHECKOUT = "https://pay.wiapy.com/VbWwP9Yx9WYv";
     var pages = Array.prototype.slice.call(book.querySelectorAll(".page"));
     var INTERVAL = 3800, DURATION = reduceMotion ? 600 : 1100;
     var order = [], dots = [], busy = false, timer = null;
-    var userPaused = false, hovering = false, focused = false, offscreen = false;
+    var userPaused = false, offscreen = false;
 
     // Espera todas as imagens responderem; mantém só as que existem
     var pending = pages.length;
@@ -112,10 +112,6 @@ var URL_CHECKOUT = "https://pay.wiapy.com/VbWwP9Yx9WYv";
         if(Math.abs(e.changedTouches[0].clientX - x0) > 40){ flip(); restart(); }
         x0 = null;
       });
-      book.addEventListener("mouseenter", function(){ hovering = true; restart(); });
-      book.addEventListener("mouseleave", function(){ hovering = false; restart(); });
-      book.addEventListener("focusin", function(){ focused = true; restart(); });
-      book.addEventListener("focusout", function(){ focused = false; restart(); });
       pauseBtn.addEventListener("click", function(){
         userPaused = !userPaused;
         pauseBtn.setAttribute("aria-pressed", String(userPaused));
@@ -159,7 +155,7 @@ var URL_CHECKOUT = "https://pay.wiapy.com/VbWwP9Yx9WYv";
 
     function restart(){
       clearInterval(timer); timer = null;
-      if(userPaused || hovering || focused || offscreen || document.hidden) return;
+      if(userPaused || offscreen || document.hidden) return;
       timer = setInterval(flip, INTERVAL);
     }
   })();
