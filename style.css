@@ -358,14 +358,12 @@ section{position:relative;padding:76px 0}
 .offer .deco-tl{top:-30px;left:-70px;width:260px;height:260px;transform:rotate(30deg)}
 .offer .deco-br{bottom:-50px;right:-70px;width:280px;height:280px;transform:rotate(210deg)}
 .offer-card{
-  margin:48px auto 0;max-width:1000px;background:var(--branco);color:var(--texto);
+  margin:48px auto 0;max-width:620px;background:var(--branco);color:var(--texto);
   border-radius:28px;padding:14px;box-shadow:0 40px 80px -30px rgba(0,0,0,.5);
   border:2px solid var(--dourado);position:relative;
 }
 .offer-inner{border:1px solid rgba(216,173,99,.45);border-radius:20px;padding:26px 20px 30px;display:grid;gap:30px}
-@media (min-width:900px){.offer-inner{grid-template-columns:1fr 1fr;gap:48px;padding:44px}}
-.offer-media .ph{--ar:1/1}
-.offer-media .ph:not(.loaded){background-color:var(--creme)}
+@media (min-width:900px){.offer-inner{padding:44px}}
 .includes-title{font-family:var(--serif);font-size:1.3rem;color:var(--pinheiro);font-weight:600;margin-bottom:16px}
 .checklist{display:grid;gap:11px}
 .checklist li{display:flex;gap:12px;align-items:flex-start;font-size:1rem;line-height:1.45}
@@ -476,3 +474,8 @@ body.has-sticky{padding-bottom:84px}
 
 /* Ramo da oferta no canto superior: escondido no celular para não ficar atrás do título */
 @media (max-width:899px){ .offer .deco-tl{display:none} }
+
+/* Depoimentos somente com imagem (prints) */
+.testi.testi-img{padding:10px;gap:0;border-radius:24px}
+.testi.testi-img .ph{--ar:413/733;border-radius:16px}
+.testi.testi-img .ph.loaded img{border-radius:16px}

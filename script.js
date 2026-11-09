@@ -261,10 +261,10 @@ var URL_CHECKOUT = "https://pay.wiapy.com/VbWwP9Yx9WYv";
   var heroCta = document.querySelector(".hero-cta");
   var offer = document.getElementById("oferta");
   if(sticky && "IntersectionObserver" in window){
-    var heroVisible = true, offerVisible = false;
+    var heroVisible = true, offerVisible = false, finalVisible = false;
     var stickyLink = sticky.querySelector("a");
     function update(){
-      var show = !heroVisible && !offerVisible;
+      var show = !heroVisible && !offerVisible && !finalVisible;
       sticky.classList.toggle("show", show);
       sticky.setAttribute("aria-hidden", String(!show));
       stickyLink.tabIndex = show ? 0 : -1;
@@ -274,5 +274,7 @@ var URL_CHECKOUT = "https://pay.wiapy.com/VbWwP9Yx9WYv";
       heroVisible = en[0].isIntersecting || en[0].boundingClientRect.top > 0; update();
     }).observe(heroCta);
     new IntersectionObserver(function(en){ offerVisible = en[0].isIntersecting; update(); }, {threshold:.15}).observe(offer);
+    var finalCta = document.querySelector("#faq .cta-wrap");
+    if(finalCta) new IntersectionObserver(function(en){ finalVisible = en[0].isIntersecting; update(); }).observe(finalCta);
   }
 })();

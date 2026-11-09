@@ -3,13 +3,9 @@ A página detecta cada arquivo sozinha e substitui o placeholder.
 
 1_781647455.webp ... 6_1161920.webp  Dobra 1 - Páginas do livro do hero (retrato A4, ~1000x1414)
 download_3.webp         Dobra 2 - Calendário aberto com páginas internas (paisagem, ~1400x866)
-depoimento-1.webp       Dobra 3 - Print de depoimento real (vertical)
-depoimento-2.webp       Dobra 3 - Print de depoimento real (vertical)
-depoimento-3.webp       Dobra 3 - Print de depoimento real (vertical)
 bonus_1.webp            Dobra 4 - 12 Bilhetinhos Românticos (4:3)
 bonus_2.webp            Dobra 4 - 6 Vales-Encontro (4:3)
 bonus_3.webp            Dobra 4 - 10 Perguntas (4:3)
-oferta-mockup.webp      Dobra 5 - Mockup completo da oferta (quadrado)
 selo-garantia.webp      Dobra 6 - Selo de 7 dias (opcional; sem ele aparece o selo vetorial)
 
 Dica: use WebP com até ~200 KB por imagem para carregar rápido no celular.
