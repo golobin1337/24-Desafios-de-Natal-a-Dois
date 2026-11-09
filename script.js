@@ -1,9 +1,9 @@
 /* =====================================================================
    CONFIGURAÇÃO DO CHECKOUT
-   Cole aqui o link do seu checkout. TODOS os botões de compra usam
-   esta mesma URL. Parâmetros UTM da página são repassados automaticamente.
+   Cole aqui o link do seu checkout. O botão da oferta (dobra 5) usa
+   esta URL. Os demais botões levam à dobra da oferta. Parâmetros UTM da página são repassados automaticamente.
    ===================================================================== */
-var URL_CHECKOUT = ""; // ex.: "https://pay.suaplataforma.com/xxxx"
+var URL_CHECKOUT = "https://pay.wiapy.com/VbWwP9Yx9WYv";
 
 (function(){
   "use strict";

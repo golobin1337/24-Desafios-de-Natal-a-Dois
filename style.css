@@ -129,7 +129,7 @@ section{position:relative;padding:76px 0}
 .hero .tagline svg{width:18px;height:18px;color:var(--vinho);flex:none}
 /* ---------- Livro com páginas passando (hero) ---------- */
 .book{position:relative;max-width:440px;margin:0 auto}
-.book-pages{position:relative;aspect-ratio:3/4;perspective:2200px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.book-pages{position:relative;aspect-ratio:490/692;perspective:2200px;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .book-pages::before{ /* bordas das folhas empilhadas + sombra do livro */
   content:"";position:absolute;inset:4px -8px -8px 4px;border-radius:6px 16px 16px 6px;background:#F3E4CC;
   box-shadow:3px 3px 0 #EAD7B8, 6px 6px 0 #E2CCA6, var(--sombra-forte);
