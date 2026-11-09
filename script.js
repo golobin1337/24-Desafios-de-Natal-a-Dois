@@ -73,7 +73,7 @@ var URL_CHECKOUT = "https://pay.wiapy.com/VbWwP9Yx9WYv";
     var dotsWrap = book.querySelector(".book-dots");
     var pauseBtn = book.querySelector(".book-pause");
     var pages = Array.prototype.slice.call(book.querySelectorAll(".page"));
-    var INTERVAL = 3800, DURATION = reduceMotion ? 600 : 1100;
+    var INTERVAL = 4200, DURATION = reduceMotion ? 600 : 1400;
     var order = [], dots = [], busy = false, timer = null;
     var userPaused = false, offscreen = false;
 
@@ -93,6 +93,13 @@ var URL_CHECKOUT = "https://pay.wiapy.com/VbWwP9Yx9WYv";
       order = pages.slice();
       layout();
       if(pages.length < 2) return;
+
+      // verso de cada folha (aparece quando a página passa da lombada)
+      pages.forEach(function(p){
+        var back = document.createElement("span");
+        back.className = "page-back"; back.setAttribute("aria-hidden", "true");
+        p.appendChild(back);
+      });
 
       pages.forEach(function(p, i){
         var d = document.createElement("button");
@@ -136,14 +143,16 @@ var URL_CHECKOUT = "https://pay.wiapy.com/VbWwP9Yx9WYv";
     function flip(){
       if(busy || order.length < 2) return;
       busy = true;
-      var top = order[0];
+      var top = order[0], next = order[1];
       top.classList.add("turning");
+      next.classList.add("revealing");
       setTimeout(function(){
         order.push(order.shift());
         layout();
         top.classList.remove("turning");
         busy = false;
       }, DURATION);
+      setTimeout(function(){ next.classList.remove("revealing"); }, DURATION + 400);
     }
 
     function goTo(p){
@@ -158,6 +167,61 @@ var URL_CHECKOUT = "https://pay.wiapy.com/VbWwP9Yx9WYv";
       if(userPaused || offscreen || document.hidden) return;
       timer = setInterval(flip, INTERVAL);
     }
+  })();
+
+  /* ---------- 2c. Carrossel de depoimentos ---------- */
+  (function(){
+    var root = document.querySelector(".testi-carousel");
+    if(!root) return;
+    var track = root.querySelector(".testi-track");
+    var slides = Array.prototype.slice.call(track.querySelectorAll(".testi"));
+    var nav = root.querySelector(".testi-nav");
+    var prev = root.querySelector(".testi-prev");
+    var next = root.querySelector(".testi-next");
+    var dotsWrap = root.querySelector(".testi-dots");
+    var behavior = reduceMotion ? "auto" : "smooth";
+    var dots = [];
+
+    slides.forEach(function(s, i){
+      s.setAttribute("aria-roledescription", "slide");
+      s.setAttribute("aria-label", (i + 1) + " de " + slides.length);
+      var d = document.createElement("button");
+      d.type = "button"; d.className = "testi-dot";
+      d.setAttribute("aria-label", "Mostrar depoimento " + (i + 1));
+      d.addEventListener("click", function(){ goTo(i); });
+      dotsWrap.appendChild(d); dots.push(d);
+    });
+
+    function pad(){ return parseFloat(getComputedStyle(track).paddingLeft) || 0; }
+    function step(){ return slides.length > 1 ? slides[1].offsetLeft - slides[0].offsetLeft : track.clientWidth; }
+    function goTo(i){ track.scrollTo({left: slides[i].offsetLeft - pad(), behavior: behavior}); }
+    function current(){
+      var x = track.scrollLeft, best = 0, dist = Infinity;
+      slides.forEach(function(s, i){
+        var d = Math.abs(s.offsetLeft - pad() - x);
+        if(d < dist){ dist = d; best = i; }
+      });
+      return best;
+    }
+    function update(){
+      var max = track.scrollWidth - track.clientWidth;
+      nav.hidden = max <= 2;
+      prev.disabled = track.scrollLeft <= 2;
+      next.disabled = track.scrollLeft >= max - 2;
+      var c = track.scrollLeft >= max - 2 ? slides.length - 1 : current();
+      dots.forEach(function(d, i){ d.setAttribute("aria-current", String(i === c)); });
+    }
+
+    prev.addEventListener("click", function(){ track.scrollBy({left: -step(), behavior: behavior}); });
+    next.addEventListener("click", function(){ track.scrollBy({left: step(), behavior: behavior}); });
+    var raf = null;
+    track.addEventListener("scroll", function(){
+      if(raf) return;
+      raf = requestAnimationFrame(function(){ raf = null; update(); });
+    }, {passive:true});
+    window.addEventListener("resize", update);
+    window.addEventListener("load", update);
+    update();
   })();
 
   /* Ano atual no rodapé */

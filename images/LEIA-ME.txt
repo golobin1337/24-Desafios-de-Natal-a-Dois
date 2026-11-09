@@ -2,7 +2,7 @@ Coloque aqui as imagens definitivas com exatamente estes nomes.
 A página detecta cada arquivo sozinha e substitui o placeholder.
 
 1_781647455.webp ... 6_1161920.webp  Dobra 1 - Páginas do livro do hero (retrato A4, ~1000x1414)
-paginas-internas.webp   Dobra 2 - Composição das páginas internas (4:3, ~1600x1200)
+download_3.webp         Dobra 2 - Calendário aberto com páginas internas (paisagem, ~1400x866)
 depoimento-1.webp       Dobra 3 - Print de depoimento real (vertical)
 depoimento-2.webp       Dobra 3 - Print de depoimento real (vertical)
 depoimento-3.webp       Dobra 3 - Print de depoimento real (vertical)
