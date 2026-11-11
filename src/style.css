@@ -304,7 +304,7 @@ picture{display:contents}
 }
 .bonus .section-lead{color:var(--pinheiro);font-weight:600}
 .bonus-grid{display:grid;gap:24px;margin-top:48px}
-@media (min-width:900px){.bonus-grid{grid-template-columns:repeat(3,1fr)}}
+@media (min-width:900px){.bonus-grid{grid-template-columns:repeat(2,1fr);max-width:920px;margin-left:auto;margin-right:auto}}
 .bonus-card{
   position:relative;background:var(--branco);border-radius:var(--raio);padding:14px 14px 26px;
   box-shadow:var(--sombra);border:1px solid rgba(216,173,99,.55);display:flex;flex-direction:column;
@@ -483,3 +483,34 @@ body.has-sticky{padding-bottom:84px}
   .trust .item{flex-direction:column;gap:6px;white-space:normal;text-align:center;font-size:.78rem;line-height:1.25}
   .trust svg{width:20px;height:20px}
 }
+
+/* ---------- Imagem ampliável (dobra 2) ---------- */
+.zoom-btn{display:block;width:100%;padding:0;margin:0;border:0;background:none;cursor:zoom-in;position:relative;border-radius:inherit;-webkit-tap-highlight-color:transparent}
+.zoom-badge{position:absolute;right:12px;bottom:12px;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;
+  background:rgba(255,255,255,.92);color:var(--vinho);border:1.5px solid var(--dourado);box-shadow:var(--sombra);transition:transform .2s ease}
+.zoom-badge svg{width:20px;height:20px}
+.zoom-btn:hover .zoom-badge{transform:scale(1.08)}
+.zoom-hint{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:12px;font-size:.85rem;font-weight:500;color:var(--texto-suave)}
+.zoom-hint svg{width:16px;height:16px;color:var(--vinho);flex:none}
+
+/* Tela cheia */
+.lightbox{width:100vw;max-width:none;height:100vh;height:100dvh;max-height:none;margin:0;padding:0;border:0;
+  background:#180c0f;color:var(--creme);overflow:hidden}
+.lightbox[open]{display:flex;flex-direction:column;animation:fadeImg .25s ease}
+.lightbox::backdrop{background:#180c0f}
+html.lb-open{overflow:hidden}
+.lb-close{position:absolute;top:calc(12px + env(safe-area-inset-top));right:12px;z-index:2;display:inline-flex;align-items:center;gap:8px;
+  min-height:48px;padding:10px 18px;border-radius:999px;border:1.5px solid var(--dourado);background:var(--branco);color:var(--vinho);
+  font:700 1rem var(--sans);cursor:pointer;box-shadow:0 10px 30px -10px rgba(0,0,0,.6)}
+.lb-close svg{width:18px;height:18px}
+.lb-scroll{flex:1;min-height:0;overflow:auto;display:flex;align-items:center;padding:72px 16px 8px;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.lb-img{display:block;margin:auto;width:auto;height:auto;max-width:min(1028px,100%);max-height:100%;border-radius:12px;box-shadow:0 20px 60px -20px rgba(0,0,0,.7);cursor:default}
+/* Celular em pé: imagem maior que a tela, dá para arrastar para os lados */
+@media (max-width:700px) and (orientation:portrait){
+  .lb-scroll{padding:72px 0 8px}
+  .lb-img{max-width:none;max-height:none;height:min(62vh,636px);margin:auto 16px;border-radius:8px}
+}
+.lb-hint{flex:none;text-align:center;font-size:.85rem;color:rgba(255,244,230,.75);padding:10px 16px calc(14px + env(safe-area-inset-bottom))}
+.lb-hint .only-portrait{display:none}
+@media (max-width:700px) and (orientation:portrait){.lb-hint .only-portrait{display:inline}}
+

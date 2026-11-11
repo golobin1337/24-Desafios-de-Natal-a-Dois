@@ -211,6 +211,51 @@ var URL_CHECKOUT = "https://pay.wiapy.com/VbWwP9Yx9WYv";
     update();
   })();
 
+  /* ---------- 2d. Imagem ampliada (tela cheia) ---------- */
+  (function(){
+    var dlg = document.getElementById("lightbox");
+    if(!dlg) return;
+    var big = dlg.querySelector(".lb-img");
+    var scroller = dlg.querySelector(".lb-scroll");
+    var pushed = false, lastBtn = null;
+
+    // Pega a maior versão da imagem (a mais nítida)
+    function largest(img){
+      var best = img.currentSrc || img.src, bw = 0;
+      (img.getAttribute("srcset") || "").split(",").forEach(function(part){
+        var p = part.trim().split(/\s+/), w = parseInt(p[1], 10);
+        if(p[0] && w > bw){ bw = w; best = p[0]; }
+      });
+      return best;
+    }
+    function center(){ scroller.scrollLeft = (scroller.scrollWidth - scroller.clientWidth) / 2; }
+
+    function open(btn){
+      var img = btn.querySelector("img");
+      if(!dlg.showModal){ window.open(largest(img), "_blank"); return; }
+      lastBtn = btn;
+      big.alt = img.alt;
+      big.src = largest(img);
+      dlg.showModal();
+      doc.classList.add("lb-open");
+      if(big.complete) center(); else big.addEventListener("load", center, {once:true});
+      try{ history.pushState({lightbox:1}, ""); pushed = true; }catch(e){}
+    }
+    function close(){
+      if(pushed){ pushed = false; history.back(); return; } // o "popstate" abaixo fecha
+      if(dlg.open) dlg.close();
+    }
+
+    document.querySelectorAll(".zoom-btn").forEach(function(btn){
+      btn.addEventListener("click", function(){ open(btn); });
+    });
+    dlg.querySelector(".lb-close").addEventListener("click", close);
+    dlg.addEventListener("click", function(e){ if(e.target !== big && !e.target.closest(".lb-close")) close(); });
+    dlg.addEventListener("cancel", function(e){ e.preventDefault(); close(); }); // tecla Esc
+    window.addEventListener("popstate", function(){ if(dlg.open){ pushed = false; dlg.close(); } }); // botão voltar do celular
+    dlg.addEventListener("close", function(){ doc.classList.remove("lb-open"); if(lastBtn) lastBtn.focus({preventScroll:true}); });
+  })();
+
   /* Ano atual no rodapé */
   var ano = document.getElementById("ano");
   if(ano) ano.textContent = new Date().getFullYear();

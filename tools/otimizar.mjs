@@ -176,6 +176,8 @@ for (const name of pages) {
   let html = fs.readFileSync(path.join(SRC, name), 'utf8');
   const ctx = {};
 
+  // Comentários são só instruções para quem edita (e saem na minificação): não processa nada dentro deles
+  html = html.replace(/<!--(?!\[)[\s\S]*?-->/g, '');
   html = await replaceAsync(html, /<img\b[^>]*>/gi, (tag) => rewriteImg(tag, ctx));
 
   // CSS inteiro no <head> (é pequeno: ~6 KB comprimido) -> a página pinta sem esperar outro arquivo
