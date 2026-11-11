@@ -103,6 +103,9 @@ var URL_CHECKOUT = "https://pay.wiapy.com/VbWwP9Yx9WYv";
         if(Math.abs(e.changedTouches[0].clientX - x0) > 40){ flip(); restart(); }
         x0 = null;
       });
+      // Setas: a pessoa pode virar as páginas quando quiser (o automático continua)
+      book.querySelector(".book-next").addEventListener("click", function(){ startLoading(); flip(); restart(); });
+      book.querySelector(".book-prev").addEventListener("click", function(){ startLoading(); goTo(order[order.length - 1]); restart(); });
       pauseBtn.addEventListener("click", function(){
         userPaused = !userPaused;
         pauseBtn.setAttribute("aria-pressed", String(userPaused));
