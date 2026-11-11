@@ -8,7 +8,6 @@ var URL_CHECKOUT = "https://pay.wiapy.com/VbWwP9Yx9WYv";
 (function(){
   "use strict";
   var doc = document.documentElement;
-  doc.classList.add("js");
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* ---------- 1. Checkout: todos os botões usam URL_CHECKOUT ---------- */
@@ -35,35 +34,6 @@ var URL_CHECKOUT = "https://pay.wiapy.com/VbWwP9Yx9WYv";
     }
   });
 
-  /* ---------- 2. Imagens: carrega o arquivo se existir; senão mantém o placeholder ---------- */
-  function loadSlot(fig){
-    var src = fig.getAttribute("data-src");
-    if(!src || fig.dataset.done) return;
-    fig.dataset.done = "1";
-    var img = new Image();
-    img.decoding = "async";
-    img.alt = fig.getAttribute("data-alt") || "";
-    if(fig.hasAttribute("data-eager")) img.fetchPriority = "high";
-    img.onload = function(){
-      img.width = img.naturalWidth; img.height = img.naturalHeight;
-      fig.appendChild(img);
-      fig.classList.add("loaded");
-      fig.dispatchEvent(new Event("slotdone"));
-    };
-    img.onerror = function(){
-      fig.classList.add("missing");
-      fig.dispatchEvent(new Event("slotdone"));
-    };
-    img.src = src;
-  }
-  var slots = document.querySelectorAll(".ph[data-src]");
-  if("IntersectionObserver" in window){
-    var imgObs = new IntersectionObserver(function(entries){
-      entries.forEach(function(en){ if(en.isIntersecting){ loadSlot(en.target); imgObs.unobserve(en.target); } });
-    }, {rootMargin:"600px 0px"});
-    slots.forEach(function(f){ f.hasAttribute("data-eager") ? loadSlot(f) : imgObs.observe(f); });
-  } else { slots.forEach(loadSlot); }
-
   /* ---------- 2b. Livro do hero: páginas passando ---------- */
   (function(){
     var book = document.getElementById("heroBook");
@@ -77,19 +47,33 @@ var URL_CHECKOUT = "https://pay.wiapy.com/VbWwP9Yx9WYv";
     var order = [], dots = [], busy = false, timer = null;
     var userPaused = false, offscreen = false;
 
-    // Espera todas as imagens responderem; mantém só as que existem
-    var pending = pages.length;
-    pages.forEach(function(p){
-      p.addEventListener("slotdone", function(){ if(--pending === 0) init(); }, {once:true});
-      loadSlot(p);
-    });
+    // Páginas 2 em diante: baixam uma de cada vez, só depois da primeira tela
+    // (assim não disputam internet com o título, a 1ª página e o botão)
+    var deferred = pages.map(function(p){ return p.querySelector("img[data-src]"); }).filter(Boolean);
+    function loadNext(){
+      var img = deferred.shift();
+      if(!img) return;
+      img.addEventListener("load", loadNext, {once:true});
+      img.addEventListener("error", loadNext, {once:true});
+      if(img.dataset.srcset) img.srcset = img.dataset.srcset;
+      img.src = img.dataset.src;
+      img.removeAttribute("data-src"); img.removeAttribute("data-srcset");
+    }
+    // Começa quando a página terminou de carregar (ou 2,5 s depois da 1ª página aparecer, o que vier antes)
+    var started = false;
+    function startLoading(){ if(started) return; started = true; setTimeout(loadNext, 200); }
+    if(document.readyState === "complete") startLoading();
+    else window.addEventListener("load", startLoading, {once:true});
+    var firstImg = pages[0] && pages[0].querySelector("img");
+    if(firstImg && !firstImg.complete) firstImg.addEventListener("load", function(){ setTimeout(startLoading, 2500); }, {once:true});
+    else setTimeout(startLoading, 2500);
+
+    // A página só vira se a próxima imagem já estiver pronta
+    function ready(p){ var im = p.querySelector("img"); return !im || (im.complete && im.naturalWidth > 0); }
+
+    init();
 
     function init(){
-      var found = pages.filter(function(p){ return p.classList.contains("loaded"); });
-      if(found.length){
-        pages.forEach(function(p){ if(!p.classList.contains("loaded")) p.remove(); });
-        pages = found;
-      }
       order = pages.slice();
       layout();
       if(pages.length < 2) return;
@@ -108,7 +92,7 @@ var URL_CHECKOUT = "https://pay.wiapy.com/VbWwP9Yx9WYv";
         d.addEventListener("click", function(){ goTo(p); restart(); });
         dotsWrap.appendChild(d); dots.push(d);
       });
-      nav.hidden = false;
+      book.classList.add("ready");
       layout();
 
       stage.addEventListener("click", function(){ flip(); restart(); });
@@ -141,7 +125,7 @@ var URL_CHECKOUT = "https://pay.wiapy.com/VbWwP9Yx9WYv";
     }
 
     function flip(){
-      if(busy || order.length < 2) return;
+      if(busy || order.length < 2 || !ready(order[1])) return;
       busy = true;
       var top = order[0], next = order[1];
       top.classList.add("turning");
@@ -156,7 +140,7 @@ var URL_CHECKOUT = "https://pay.wiapy.com/VbWwP9Yx9WYv";
     }
 
     function goTo(p){
-      if(busy || order[0] === p) return;
+      if(busy || order[0] === p || !ready(p)) return;
       while(order[0] !== p) order.push(order.shift());
       layout();
       p.classList.remove("appear"); void p.offsetWidth; p.classList.add("appear");
@@ -231,6 +215,9 @@ var URL_CHECKOUT = "https://pay.wiapy.com/VbWwP9Yx9WYv";
   /* ---------- 3. Animações de entrada ---------- */
   var reveals = document.querySelectorAll(".reveal");
   if(!reduceMotion && "IntersectionObserver" in window){
+    var vh = window.innerHeight || doc.clientHeight;
+    reveals.forEach(function(el){ if(el.getBoundingClientRect().top < vh) el.classList.add("in"); });
+    doc.classList.add("js");
     var revObs = new IntersectionObserver(function(entries){
       entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add("in"); revObs.unobserve(en.target); } });
     }, {threshold:.12, rootMargin:"0px 0px -40px 0px"});
@@ -270,9 +257,11 @@ var URL_CHECKOUT = "https://pay.wiapy.com/VbWwP9Yx9WYv";
       stickyLink.tabIndex = show ? 0 : -1;
       document.body.classList.toggle("has-sticky", show);
     }
-    new IntersectionObserver(function(en){
-      heroVisible = en[0].isIntersecting || en[0].boundingClientRect.top > 0; update();
-    }).observe(heroCta);
+    // A barra aparece quando o botão do topo já ficou para trás (confere a cada rolagem, de forma leve)
+    var ticking = false;
+    function checkHero(){ ticking = false; heroVisible = heroCta.getBoundingClientRect().bottom > 0; update(); }
+    window.addEventListener("scroll", function(){ if(!ticking){ ticking = true; requestAnimationFrame(checkHero); } }, {passive:true});
+    checkHero();
     new IntersectionObserver(function(en){ offerVisible = en[0].isIntersecting; update(); }, {threshold:.15}).observe(offer);
     var finalCta = document.querySelector("#faq .cta-wrap");
     if(finalCta) new IntersectionObserver(function(en){ finalVisible = en[0].isIntersecting; update(); }).observe(finalCta);

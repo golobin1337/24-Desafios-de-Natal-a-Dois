@@ -1,0 +1,15 @@
+{
+  "name": "calendario-advento-a-dois",
+  "private": true,
+  "type": "module",
+  "description": "Página de vendas. Edite os arquivos em src/ e rode: npm run otimizar",
+  "scripts": {
+    "otimizar": "node tools/otimizar.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.12",
+    "html-minifier-terser": "7.2.0",
+    "sharp": "0.34.5",
+    "subset-font": "^2.4.0"
+  }
+}

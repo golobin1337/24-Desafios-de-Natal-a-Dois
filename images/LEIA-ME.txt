@@ -1,12 +1,20 @@
-Coloque aqui as imagens definitivas com exatamente estes nomes.
-A página detecta cada arquivo sozinha e substitui o placeholder.
+IMAGENS ORIGINAIS (fonte)
 
-1_781647455.webp ... 6_1161920.webp  Dobra 1 - Páginas do livro do hero (retrato A4, ~1000x1414)
-download_3.webp         Dobra 2 - Calendário aberto com páginas internas (paisagem, ~1400x866)
-bonus_1.webp            Dobra 4 - 12 Bilhetinhos Românticos (4:3)
-bonus_2.webp            Dobra 4 - 6 Vales-Encontro (4:3)
-bonus_3.webp            Dobra 4 - 10 Perguntas (4:3)
-selo-garantia.webp      Dobra 6 - Selo de 7 dias (opcional; sem ele aparece o selo vetorial)
+Estas são as imagens originais. A página publicada NÃO usa esta pasta direto:
+o comando "npm run otimizar" gera as versões otimizadas em assets/img/.
 
-Dica: use WebP com até ~200 KB por imagem para carregar rápido no celular.
-Se quiser outro formato (.jpg/.png), troque o data-src correspondente no index.html.
+Para trocar uma imagem:
+  1. Coloque o arquivo novo aqui (WebP, JPG ou PNG — qualquer tamanho; ele é convertido
+     para WebP e reduzido automaticamente, sempre mantendo a proporção, sem distorcer).
+  2. Se o nome mudou, atualize o src="images/..." correspondente em src/index.html
+     (e/ou src/index-b.html).
+  3. Rode: npm run otimizar
+
+Imagens usadas:
+  1_781647455.webp ... 6_1161920.webp   Página A - livro do hero (retrato A4)
+  pagina b/1.webp ... 10.webp           Página B - livro do hero (retrato A4)
+  download_3.webp                       Dobra 2 - calendário aberto (paisagem)
+  bonus_1.webp, bonus_2.webp, bonus_3.webp   Dobra 4 - bônus (4:3)
+  f3688c8e..., fe1f2dbc..., 2d869069...      Dobra 3 - prints de depoimentos
+
+Dica de qualidade: as páginas do livro ficam mais nítidas no celular com ~1000 px de largura.

@@ -1,0 +1,21 @@
+COMO EDITAR A PÁGINA (versão otimizada para carregar rápido)
+
+  src/index.html      página A  (edite aqui)
+  src/index-b.html    página B  (edite aqui)
+  src/style.css       visual    (edite aqui)
+  src/script.js       comportamento + link do checkout (edite aqui)
+  images/             imagens originais
+
+Depois de qualquer mudança, rode no terminal (nesta pasta):
+
+  npm install          (só na primeira vez)
+  npm run otimizar
+
+Isso gera os arquivos que vão para o ar:
+
+  index.html, index-b.html   páginas prontas (HTML + CSS + JS minificados num arquivo só)
+  assets/img/                imagens WebP otimizadas, com versões menores para celular
+  assets/fonts/              fontes reduzidas só aos caracteres usados
+
+NÃO edite index.html / index-b.html da raiz nem assets/: eles são recriados a cada "npm run otimizar".
+Publique (envie para o GitHub) a pasta inteira, como antes.
