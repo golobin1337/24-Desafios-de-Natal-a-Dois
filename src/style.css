@@ -127,7 +127,7 @@ picture{display:contents}
 .hero-cta{grid-area:cta;display:flex;flex-direction:column;gap:16px;align-items:center}
 .hero h1{font-size:clamp(2rem,7.6vw,3.35rem);font-weight:700;color:var(--vinho)}
 .hero .sub{font-family:var(--serif);font-style:italic;font-weight:500;color:var(--pinheiro);font-size:clamp(1.18rem,3.8vw,1.42rem);margin-top:22px;line-height:1.45}
-.hero .desc{margin-top:18px;color:var(--texto-suave);font-size:1.05rem}
+.hero .desc{margin-top:18px;color:var(--texto-suave);font-size:1.05rem;text-wrap:balance} /* linhas equilibradas, sem palavra sozinha */
 /* ---------- Livro com páginas passando (hero) ---------- */
 .book{position:relative;width:82%;max-width:360px;margin:0 auto}
 @media (min-width:900px){.book{width:100%;max-width:400px}}
