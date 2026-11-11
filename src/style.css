@@ -129,7 +129,8 @@ picture{display:contents}
 .hero .sub{font-family:var(--serif);font-style:italic;font-weight:500;color:var(--pinheiro);font-size:clamp(1.18rem,3.8vw,1.42rem);margin-top:22px;line-height:1.45}
 .hero .desc{margin-top:18px;color:var(--texto-suave);font-size:1.05rem}
 /* ---------- Livro com páginas passando (hero) ---------- */
-.book{position:relative;max-width:440px;margin:0 auto}
+.book{position:relative;width:82%;max-width:360px;margin:0 auto}
+@media (min-width:900px){.book{width:100%;max-width:400px}}
 .book-pages{position:relative;aspect-ratio:490/692;perspective:2200px;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .book-pages::before{ /* bordas das folhas empilhadas + sombra do livro */
   content:"";position:absolute;inset:4px -8px -8px 4px;border-radius:6px 16px 16px 6px;background:#F3E4CC;
